@@ -1,0 +1,275 @@
+﻿@model WebKhoaHoc.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng Ký";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Ký - EduLearn</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+        }
+
+        .split-screen {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* === CỘT TRÁI: ẢNH NỀN MỜ (ĐÃ SỬA) === */
+        .left-side {
+            flex: 1;
+            /* 1. Thay ảnh mới có chiều sâu hơn */
+            background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: none;
+        }
+
+            /* Lớp phủ làm mờ */
+            .left-side::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                /* 2. Giảm độ đậm của màu hồng/tím (dùng rgba có độ trong suốt cao hơn 0.2 - 0.7) */
+                background: linear-gradient(to bottom, rgba(236, 72, 153, 0.2), rgba(15, 23, 42, 0.7));
+                /* 3. Tăng độ mờ lên (8px) để trông ảo hơn */
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px); /* Hỗ trợ Safari */
+            }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 80px;
+            color: white;
+            /* Thêm bóng đổ nhẹ cho chữ dễ đọc trên nền ảnh */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        /* ========================================= */
+
+        .right-side {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: white;
+        }
+
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .register-wrapper {
+            width: 100%;
+            max-width: 450px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .form-control-custom {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+            .form-control-custom:focus {
+                background: white;
+                border-color: #ec4899;
+                box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.1);
+                outline: none;
+            }
+
+        .input-icon-box {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #1e293b;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+            .btn-social:hover {
+                background: #f8fafc;
+                transform: translateY(-2px);
+            }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+            .divider::before, .divider::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .divider:not(:empty)::before {
+                margin-right: .5em;
+            }
+
+            .divider:not(:empty)::after {
+                margin-left: .5em;
+            }
+
+        @@media (min-width: 992px) {
+            .left-side {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-screen">
+
+        <div class="left-side">
+            <div class="left-content">
+                <div class="mb-4">
+                    <i class="fa-solid fa-rocket display-4 text-warning"></i>
+                </div>
+                <h2 class="fw-bold mb-3">"Hành trình vạn dặm bắt đầu từ một bước chân."</h2>
+                <p class="fs-5 opacity-90">— Lão Tử</p>
+                <div class="mt-4 text-white small fw-bold font-monospace">
+                    <i class="fa-solid fa-check-circle text-success me-2"></i>Truy cập không giới hạn<br>
+                    <i class="fa-solid fa-check-circle text-success me-2"></i>Cộng đồng hỗ trợ 24/7<br>
+                    <i class="fa-solid fa-check-circle text-success me-2"></i>Chứng chỉ hoàn thành
+                </div>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="register-wrapper">
+
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-danger bg-opacity-10 text-danger rounded-3 p-3 mb-3">
+                        <i class="fa-solid fa-user-plus fs-3"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark">Tạo tài khoản mới 🚀</h3>
+                    <p class="text-secondary">Tham gia cộng đồng 50,000+ học viên.</p>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <a href="#" class="btn btn-social text-decoration-none">
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google">
+                            Google
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-social text-decoration-none">
+                            <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" width="20" alt="Facebook">
+                            Facebook
+                        </a>
+                    </div>
+                </div>
+
+                <div class="divider">HOẶC ĐĂNG KÝ VỚI EMAIL</div>
+
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small bg-danger bg-opacity-10 p-2 rounded"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-secondary small">Tên đăng nhập</label>
+                        <div class="input-icon-box">
+                            <i class="fa-regular fa-user input-icon"></i>
+                            <input asp-for="UserName" class="form-control form-control-custom" placeholder="nguyenvana" />
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                   
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label class="form-label fw-bold text-secondary small">Mật khẩu</label>
+                            <div class="input-icon-box">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input asp-for="Password" type="password" class="form-control form-control-custom" placeholder="••••••••" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-secondary small">Nhập lại</label>
+                            <div class="input-icon-box">
+                                <i class="fa-solid fa-check-double input-icon"></i>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control form-control-custom" placeholder="••••••••" />
+                            </div>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger w-100 py-3 rounded-pill fw-bold shadow-lg mb-4"
+                            style="background: linear-gradient(to right, #ec4899, #ef4444); border: none;">
+                        ĐĂNG KÝ MIỄN PHÍ
+                    </button>
+
+                    <p class="text-center text-secondary small">
+                        Đã là thành viên?
+                        <a asp-action="Login" class="text-danger fw-bold text-decoration-none ms-1">Đăng nhập ngay</a>
+                    </p>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a asp-controller="Home" asp-action="Index" class="text-secondary small text-decoration-none hover-primary">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Quay về trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,117 @@
+﻿@model WebKhoaHoc.Models.KhoaHoc
+
+@{
+    ViewData["Title"] = "Thêm Khóa Học Mới";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .create-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; min-height: 600px; }
+    .create-left { width: 40%; background-color: #1e293b; background-size: cover; background-position: center; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; color: white; transition: all 0.5s ease; }
+    .create-left::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: 1; }
+    .create-left-content { position: relative; z-index: 2; }
+    .create-right { width: 60%; padding: 50px; background: white; }
+    
+    .input-group-custom { position: relative; margin-bottom: 5px; }
+    .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+    .form-control-custom { width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #e2e8f0; border-radius: 12px; transition: border-color 0.3s; outline: none; }
+    .form-control-custom:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    
+    /* Style khi có lỗi Validation */
+    .input-validation-error { border-color: #ef4444 !important; background-color: #fef2f2 !important; }
+    .field-validation-error { font-size: 0.75rem; color: #ef4444; font-weight: 600; display: block; margin-top: 4px; }
+
+    .form-control-file { border: 2px dashed #dee2e6; padding: 10px; border-radius: 12px; width: 100%; cursor: pointer; }
+    
+    @@media (max-width: 992px) { .create-card { flex-direction: column; } .create-left { width: 100%; height: 250px; } .create-right { width: 100%; } }
+</style>
+
+<div class="container py-4">
+    <div class="create-card">
+        <div class="create-left" id="imagePreviewContainer" style="background-image: url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1931');">
+            <div class="create-left-content">
+                <div class="mb-3">
+                    <span class="badge bg-white text-primary px-3 py-2 rounded-pill fw-bold shadow-sm">Admin Panel</span>
+                </div>
+                <h2 class="fw-bold display-6">Thêm Khóa Học</h2>
+                <p class="opacity-75" id="previewText">Hình ảnh minh họa sẽ hiển thị tại đây sau khi bạn chọn file.</p>
+                <a asp-action="Index" class="btn btn-outline-light rounded-pill px-4 mt-3">
+                    <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                </a>
+            </div>
+        </div>
+
+        <div class="create-right">
+            <h4 class="fw-bold text-dark mb-4">Thông tin chi tiết</h4>
+
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="TenKhoaHoc" class="form-label fw-bold text-secondary small text-uppercase"></label>
+                    <div class="input-group-custom">
+                        <i class="fa-solid fa-heading input-icon"></i>
+                        <input asp-for="TenKhoaHoc" class="form-control-custom" placeholder="Ví dụ: Lập trình ASP.NET Core" />
+                    </div>
+                    <span asp-validation-for="TenKhoaHoc"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="GiaTien" class="form-label fw-bold text-secondary small text-uppercase"></label>
+                        <div class="input-group-custom">
+                            <i class="fa-solid fa-tag input-icon"></i>
+                            <input asp-for="GiaTien" class="form-control-custom" type="number" placeholder="500000" />
+                        </div>
+                        <span asp-validation-for="GiaTien"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold text-secondary small text-uppercase">Tải ảnh minh họa</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" name="HinhAnhFile" id="HinhAnhFile" class="form-control-file" accept="image/*" required />
+                        </div>
+                        <small class="text-muted mt-1 d-block" style="font-size: 0.7rem;">Chấp nhận: JPG, PNG, WebP</small>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="MoTa" class="form-label fw-bold text-secondary small text-uppercase"></label>
+                    <div class="input-group-custom">
+                        <i class="fa-solid fa-align-left input-icon" style="top: 20px; transform: none;"></i>
+                        <textarea asp-for="MoTa" class="form-control-custom" rows="4" placeholder="Nhập nội dung mô tả..." style="padding-top: 12px;"></textarea>
+                    </div>
+                    <span asp-validation-for="MoTa"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary py-3 rounded-pill fw-bold shadow-lg border-0" style="background: linear-gradient(45deg, #2563eb, #4f46e5);">
+                        <i class="fa-solid fa-cloud-arrow-up me-2"></i> TẢI LÊN & LƯU KHÓA HỌC
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    
+    <script>
+        // Xử lý Preview ảnh
+        document.getElementById('HinhAnhFile').onchange = evt => {
+            const [file] = evt.target.files;
+            if (file) {
+                const url = URL.createObjectURL(file);
+                const container = document.getElementById('imagePreviewContainer');
+                const text = document.getElementById('previewText');
+                
+                container.style.backgroundImage = `url('${url}')`;
+                text.innerHTML = `<i class="fa-solid fa-check-circle me-1"></i> Đã chọn: <strong>${file.name}</strong>`;
+                text.classList.remove('opacity-75');
+                text.classList.add('text-success', 'fw-bold');
+            }
+        }
+    </script>
+}

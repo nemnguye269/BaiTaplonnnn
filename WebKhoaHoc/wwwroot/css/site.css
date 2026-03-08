@@ -1,0 +1,213 @@
+﻿/* =========================================
+   1. CORE VARIABLES (Dựa trên theme.css)
+   ========================================= */
+:root {
+    /* Font & Radius */
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --radius-xl: 1rem; /* rounded-xl */
+    --radius-2xl: 1.5rem; /* rounded-2xl */
+    --radius-3xl: 2rem; /* rounded-3xl */
+    /* Core Colors (Đã chuyển sang Hex/RGB cho dễ dùng) */
+    --primary-start: #3b82f6; /* Blue-500 */
+    --primary-end: #4f46e5; /* Indigo-600 */
+    --purple-start: #a855f7; /* Purple-500 */
+    --purple-end: #db2777; /* Pink-600 */
+    /* Backgrounds */
+    --bg-body: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.9); /* Kính mờ */
+    /* Shadows */
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-body);
+    color: #1e293b; /* Slate-800 */
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* =========================================
+   2. UTILITIES (Mô phỏng Tailwind)
+   ========================================= */
+
+/* Gradient Backgrounds */
+.bg-gradient-client {
+    background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 50%, #faf5ff 100%); /* Blue-50 -> Indigo-50 -> Purple-50 */
+}
+
+.bg-gradient-login {
+    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 50%, #f3e8ff 100%); /* Blue -> Indigo -> Purple */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-gradient-register {
+    background: linear-gradient(135deg, #faf5ff 0%, #fdf2f8 50%, #fff7ed 100%); /* Purple -> Pink -> Orange */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-gradient-admin {
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 50%, #eef2ff 100%); /* Slate -> Blue -> Indigo */
+}
+
+/* Text Gradients */
+.text-gradient-primary {
+    background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-purple {
+    background: linear-gradient(to right, var(--purple-start), var(--purple-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Cards (Glassmorphism) */
+.card-glass {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-2xl); /* rounded-2xl */
+    box-shadow: var(--shadow-xl);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(to right, var(--primary-start), var(--primary-end));
+    color: white;
+    border: none;
+    border-radius: var(--radius-xl);
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+        color: white;
+    }
+
+.btn-purple {
+    background: linear-gradient(to right, var(--purple-start), var(--purple-end));
+    color: white;
+    border: none;
+    border-radius: var(--radius-xl);
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: transform 0.2s;
+    cursor: pointer;
+    width: 100%;
+}
+
+    .btn-purple:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(219, 39, 119, 0.4);
+    }
+
+/* Inputs */
+.form-control-custom {
+    width: 100%;
+    padding: 12px 16px;
+    padding-left: 44px; /* Chừa chỗ cho icon */
+    border-radius: var(--radius-xl);
+    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s;
+    outline: none;
+    font-size: 1rem;
+}
+
+    .form-control-custom:focus {
+        border-color: var(--primary-end);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+/* Icon Wrapper trong Input */
+.input-group-custom {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8; /* Gray-400 */
+    font-size: 1.2rem;
+}
+
+/* Navbar */
+.navbar-custom {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-link-custom {
+    color: #475569;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    transition: all 0.2s;
+}
+
+    .nav-link-custom:hover {
+        background-color: #f1f5f9;
+        color: var(--primary-end);
+    }
+
+/* Logo Box */
+.logo-box {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+.footer-custom {
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    padding: 3rem 0;
+    margin-top: 4rem;
+}
+/* Giới hạn tên khóa học trên 1 dòng và hiện dấu ... */
+.text-truncate-custom {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Số dòng muốn hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}

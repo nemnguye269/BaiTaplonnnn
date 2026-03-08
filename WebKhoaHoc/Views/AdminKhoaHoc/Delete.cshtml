@@ -1,0 +1,59 @@
+﻿@model WebKhoaHoc.Models.KhoaHoc
+
+@{
+    ViewData["Title"] = "Xác nhận xóa";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    /* CSS để xóa bỏ khoảng trắng thừa ở hai bên */
+    .admin-delete-wrapper {
+        background-color: #f8fafc;
+        min-height: calc(100vh - 60px);
+        margin: -1.5rem; /* Kéo nội dung sát vào lề Layout */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .delete-card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid p-0">
+    <div class="admin-delete-wrapper">
+        <div class="delete-card">
+            <div class="mb-4 text-danger" style="font-size: 5rem;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+
+            <h3 class="fw-bold text-dark mb-2">Bạn chắc chắn muốn xóa?</h3>
+            <p class="text-secondary mb-4">
+                Khóa học <strong>"@Model.TenKhoaHoc"</strong> sẽ bị xóa vĩnh viễn. <br>
+                Hành động này không thể hoàn tác.
+            </p>
+
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="d-flex gap-3 justify-content-center">
+                    <a asp-action="Index" class="btn btn-light px-4 py-2 rounded-pill border fw-bold">
+                        Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-danger px-4 py-2 rounded-pill fw-bold shadow">
+                        <i class="fa-solid fa-trash-can me-2"></i> Xác nhận xóa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

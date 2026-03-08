@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WebKhoaHoc.Models.KhoaHoc>
+@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="bg-white shadow-sm p-4" style="border-radius: 24px;">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div class="d-flex align-items-center gap-2">
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold mb-0">Admin Panel</h5>
+                <small class="text-muted">Hệ thống quản trị</small>
+            </div>
+        </div>
+        <nav class="d-flex gap-4">
+            <a asp-action="Index" class="text-primary fw-bold text-decoration-none">Dashboard</a>
+            <a asp-action="Index" class="text-secondary fw-bold text-decoration-none">Quản lý khóa học</a>
+            <a href="#" class="text-secondary fw-bold text-decoration-none">Đơn hàng <span class="badge bg-danger">0</span></a>
+        </nav>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 border-end">
+            <small class="text-uppercase text-muted fw-bold small">Doanh thu</small>
+            <h3 class="fw-bold text-dark">@string.Format("{0:N0}", ViewBag.TotalRevenue ?? 0) đ</h3>
+        </div>
+        <div class="col-md-6 ps-4">
+            <small class="text-uppercase text-muted fw-bold small">Tổng khóa học</small>
+            <h3 class="fw-bold text-dark">@ViewBag.TotalCourses</h3>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="fw-bold">Danh sách khóa học</h6>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">+ Thêm Mới</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr class="small text-secondary">
+                    <th>THÔNG TIN KHÓA HỌC</th>
+                    <th>HỌC PHÍ</th>
+                    <th class="text-end">THAO TÁC</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="~/images/@item.HinhAnh" class="rounded" style="width:45px; height:45px; object-fit:cover;" onerror="this.src='https://placehold.co/50'">
+                                    <div>
+                                        <div class="fw-bold text-dark" style="max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">@item.TenKhoaHoc</div>
+                                        <small class="text-muted small">Mã: #@item.Id</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="fw-bold text-primary">@item.GiaTien.ToString("N0") đ</td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-link text-primary p-0 me-2"><i class="fa-solid fa-pen"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-link text-danger p-0"><i class="fa-solid fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

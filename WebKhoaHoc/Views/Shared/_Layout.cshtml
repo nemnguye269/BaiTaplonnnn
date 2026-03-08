@@ -1,0 +1,368 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EduLearn</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        /* 1. CẤU HÌNH CUỘN MƯỢT CƠ BẢN */
+        html {
+            scroll-behavior: smooth;
+        }
+
+            /* 2. STYLE CHO LENIS */
+            html.lenis {
+                height: auto;
+            }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
+        }
+
+            .lenis.lenis-smooth [data-lenis-prevent] {
+                overscroll-behavior: contain;
+            }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+
+        /* 3. ẢNH NỀN MỜ TOÀN TRANG */
+        body {
+            position: relative;
+            min-height: 100vh;
+            background: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: -1;
+                background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                filter: blur(10px) brightness(0.8);
+                transform: scale(1.05);
+            }
+
+        /* 4. KHỐI KÍNH CHO NỘI DUNG CHÍNH */
+        .main-glass-container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* 5. HEADER */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .nav-icon-btn {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #64748b;
+            transition: all 0.2s;
+            position: relative;
+            background: transparent;
+        }
+
+            .nav-icon-btn:hover {
+                background: #f1f5f9;
+                color: #4f46e5;
+                transform: translateY(-2px);
+            }
+
+        .nav-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.65rem;
+            padding: 0.25em 0.5em;
+            transform: translate(25%, -25%);
+            border: 2px solid white;
+        }
+
+        .category-btn {
+            font-weight: 600;
+            color: #334155;
+            padding: 8px 16px;
+            border-radius: 50px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+            .category-btn:hover {
+                background: #f8fafc;
+                color: #4f46e5;
+                border-color: #e2e8f0;
+            }
+
+        footer.bg-white {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .hover-scale {
+            transition: transform 0.2s;
+        }
+
+            .hover-scale:hover {
+                transform: scale(1.1);
+            }
+
+        #btnBackToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+            #btnBackToTop:hover {
+                transform: translateY(-5px);
+                background: #4338ca;
+            }
+    </style>
+</head>
+<body>
+
+    <header class="navbar-custom sticky-top py-2">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center h-100">
+
+                <div class="d-flex align-items-center gap-4">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none d-flex align-items-center gap-2">
+                        <div class="logo-box shadow-sm text-white bg-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 20px;">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="fs-4 fw-bold text-dark ls-1">EduLearn</span>
+                    </a>
+                    <div class="dropdown d-none d-lg-block">
+                        <a href="#" class="category-btn text-decoration-none d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-bars"></i> Danh mục
+                        </a>
+                        <ul class="dropdown-menu shadow-lg border-0 rounded-4 mt-3 p-2" style="min-width: 250px;">
+                            <li><h6 class="dropdown-header text-uppercase small fw-bold text-secondary ls-1">Phổ biến</h6></li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center" asp-controller="Home" asp-action="Index" asp-route-searchString="Python">
+                                    <i class="fa-brands fa-python me-3 text-warning fs-5" style="width: 20px;"></i> <span>Lập trình Python</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center" asp-controller="Home" asp-action="Index" asp-route-searchString="React">
+                                    <i class="fa-brands fa-react me-3 text-info fs-5" style="width: 20px;"></i> <span>ReactJS & Frontend</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center" asp-controller="Home" asp-action="Index" asp-route-searchString=".NET">
+                                    <i class="fa-brands fa-microsoft me-3 text-primary fs-5" style="width: 20px;"></i> <span>.NET & C#</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center" asp-controller="Home" asp-action="Index" asp-route-searchString="SQL">
+                                    <i class="fa-solid fa-database me-3 text-secondary fs-5" style="width: 20px;"></i> <span>Cơ sở dữ liệu</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-2"></li>
+                            <li><h6 class="dropdown-header text-uppercase small fw-bold text-secondary ls-1">Chủ đề khác</h6></li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 d-flex align-items-center" asp-controller="Home" asp-action="Index" asp-route-searchString="Flutter">
+                                    <i class="fa-brands fa-android me-3 text-success fs-5" style="width: 20px;"></i> <span>Lập trình Mobile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 d-flex align-items-center" asp-controller="Home" asp-action="Index" asp-route-searchString="Java">
+                                    <i class="fa-brands fa-java me-3 text-danger fs-5" style="width: 20px;"></i> <span>Java Spring Boot</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-2"></li>
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 text-primary fw-bold text-center bg-primary bg-opacity-10 mt-1" asp-controller="Home" asp-action="Index" asp-route-searchString="">
+                                    Xem tất cả khóa học
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="d-none d-md-block flex-grow-1 mx-5" style="max-width: 450px;">
+                    <form class="d-flex w-100" asp-controller="Home" asp-action="Index" method="get">
+                        <div class="input-group shadow-sm rounded-pill overflow-hidden bg-light border">
+                            <input class="form-control border-0 bg-transparent shadow-none ps-3" type="search" name="searchString" placeholder="Tìm khóa học..." value="@ViewData["CurrentFilter"]" aria-label="Search">
+                            <button class="btn border-0 bg-transparent text-primary pe-3" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Home" asp-action="MyCourses" class="text-decoration-none text-secondary fw-bold small me-2 d-none d-xl-block hover-primary">Khóa học của tôi</a>
+
+                        <a href="#" class="nav-icon-btn text-decoration-none" title="Yêu thích"><i class="fa-regular fa-heart fs-5"></i></a>
+                        <a href="#" class="nav-icon-btn text-decoration-none" title="Thông báo"><i class="fa-regular fa-bell fs-5"></i><span class="badge rounded-pill bg-danger nav-badge">2</span></a>
+                        <a href="#" class="nav-icon-btn text-decoration-none me-2" title="Giỏ hàng"><i class="fa-solid fa-cart-shopping fs-5"></i><span class="badge rounded-pill bg-primary nav-badge">3</span></a>
+
+                        <div class="dropdown ms-2">
+                            <a class="p-0 border-0 bg-transparent" href="#" role="button" data-bs-toggle="dropdown">
+                                <img src="https://ui-avatars.com/api/?name=@User.Identity.Name&background=random&color=fff" class="rounded-circle shadow-sm border border-2 border-white" width="40" height="40">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-3 p-2" style="min-width: 220px;">
+                                <li class="px-3 py-2 border-bottom mb-2">
+                                    <div class="fw-bold text-dark text-truncate">@User.Identity.Name</div>
+                                    <small class="text-secondary">@(User.IsInRole("Admin") ? "Quản trị viên" : "Học viên")</small>
+                                </li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a class="dropdown-item fw-bold text-primary rounded-3 mb-1" asp-controller="AdminKhoaHoc" asp-action="Index"><i class="fa-solid fa-gauge me-2"></i>Trang Quản Trị</a></li>
+                                }
+                                <li><a class="dropdown-item rounded-3 mb-1" href="#"><i class="fa-regular fa-user me-2"></i>Hồ sơ cá nhân</a></li>
+                                <li><a class="dropdown-item rounded-3 mb-1" href="#"><i class="fa-solid fa-gear me-2"></i>Cài đặt</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        <button type="submit" class="dropdown-item text-danger fw-bold rounded-3"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng xuất</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="#" class="nav-icon-btn text-decoration-none me-3"><i class="fa-solid fa-cart-shopping fs-5"></i></a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-light rounded-pill px-4 fw-bold border">Đăng nhập</a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">Đăng ký</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main" class="main-glass-container">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="bg-white border-top mt-auto">
+        <div class="container pt-5">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 pe-lg-5">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px;"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <span class="fs-4 fw-bold text-dark">EduLearn</span>
+                    </div>
+                    <p class="text-secondary small mb-4">Nền tảng học tập công nghệ hàng đầu.</p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-light rounded-circle text-primary border shadow-sm hover-scale"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-light rounded-circle text-danger border shadow-sm hover-scale"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="btn btn-light rounded-circle text-dark border shadow-sm hover-scale"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3 text-dark">Khám Phá</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                        <li><a href="#" class="text-decoration-none text-secondary hover-primary">Về chúng tôi</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary hover-primary">Khóa học Pro</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary hover-primary">Blog</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary hover-primary">Tuyển dụng</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="fw-bold mb-3 text-dark">Liên Hệ</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-3 small text-secondary">
+                        <li class="d-flex gap-2"><i class="fa-solid fa-location-dot text-primary mt-1"></i> <span>Hà Nội, Việt Nam</span></li>
+                        <li class="d-flex gap-2"><i class="fa-solid fa-phone text-primary"></i> <span>0987.654.321</span></li>
+                        <li class="d-flex gap-2"><i class="fa-solid fa-envelope text-primary"></i> <span>support@edulearn.vn</span></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="fw-bold mb-3 text-dark">Bản Đồ</h6>
+                    <div class="rounded-4 overflow-hidden border shadow-sm" style="height: 150px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.096814183664!2d105.78009371476336!3d21.028811885998345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4cd0c66f05%3A0xea31563511af2e54!2sKeangnam%20Landmark%20Tower%2072!5e0!3m2!1svi!2s!4v1678848123456!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top py-4 text-center text-secondary small">© 2026 EduLearn Corporation. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <button id="btnBackToTop" title="Lên đầu trang" onclick="scrollToTop()">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
+
+    <script>
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        const btnBackToTop = document.getElementById("btnBackToTop");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btnBackToTop.style.display = "flex";
+            } else {
+                btnBackToTop.style.display = "none";
+            }
+        };
+        function scrollToTop() {
+            lenis.scrollTo(0);
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+<link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
+</html>

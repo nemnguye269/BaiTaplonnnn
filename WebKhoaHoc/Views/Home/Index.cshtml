@@ -1,0 +1,194 @@
+﻿@model IEnumerable<WebKhoaHoc.Models.KhoaHoc>
+@{
+    ViewData["Title"] = "Trang Chủ - EduLearn";
+}
+
+<div class="row g-4">
+    <div class="col-lg-3 d-none d-lg-block">
+        <div class="bg-white rounded-4 p-4 shadow-sm border sticky-top" style="top: 90px; z-index: 900; max-height: calc(100vh - 100px); overflow-y: auto;">
+            <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom"><i class="fa-solid fa-filter text-primary"></i><h5 class="fw-bold m-0">Bộ lọc tìm kiếm</h5></div>
+            <form asp-controller="Home" asp-action="Index" method="get">
+                <input type="hidden" name="searchString" value="@ViewData["CurrentFilter"]" />
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3 small text-uppercase text-secondary ls-1">Giá khóa học</h6>
+                    <div class="form-check mb-2"><input class="form-check-input cursor-pointer" type="radio" name="priceFilter" id="priceAll" value="" @(ViewData["PriceFilter"] == null || ViewData["PriceFilter"].ToString() == "" ? "checked" : "")><label class="form-check-label cursor-pointer" for="priceAll">Tất cả</label></div>
+                    <div class="form-check mb-2"><input class="form-check-input cursor-pointer" type="radio" name="priceFilter" id="pricePaid" value="paid" @(ViewData["PriceFilter"]?.ToString() == "paid" ? "checked" : "")><label class="form-check-label cursor-pointer" for="pricePaid">Có phí</label></div>
+                    <div class="form-check"><input class="form-check-input cursor-pointer" type="radio" name="priceFilter" id="priceFree" value="free" @(ViewData["PriceFilter"]?.ToString() == "free" ? "checked" : "")><label class="form-check-label cursor-pointer" for="priceFree">Miễn phí</label></div>
+                </div>
+                <div class="mb-4 opacity-50"><h6 class="fw-bold mb-3 small text-uppercase text-secondary ls-1">Danh mục (Đang phát triển)</h6><div class="d-flex flex-column gap-2"><div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Lập trình Backend</label></div><div class="form-check"><input class="form-check-input" type="checkbox" disabled><label class="form-check-label">Lập trình Frontend</label></div></div></div>
+                <button type="submit" class="btn btn-primary w-100 rounded-pill mt-2 fw-bold shadow-sm py-2 hover-scale">Áp dụng bộ lọc</button>
+                <a asp-action="Index" class="btn btn-link text-decoration-none text-secondary w-100 mt-2 small fw-bold">Xóa tất cả lọc</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <div id="bannerCarousel" class="carousel slide mb-5 shadow-lg rounded-extra overflow-hidden" data-bs-ride="carousel">
+            <div class="carousel-indicators pb-3"><button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"></button><button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button></div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" class="d-block w-100" style="height: 400px; object-fit: cover;">
+                    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.85) 0%, rgba(168, 85, 247, 0.85) 100%);"></div>
+                    <div class="carousel-caption h-100 d-flex flex-column justify-content-center align-items-start text-start p-5 top-0"><span class="badge bg-white text-primary mb-3 px-3 py-2 rounded-pill fw-bold"><i class="fa-solid fa-fire me-1"></i> Hot Trend</span><h1 class="display-5 fw-bold mb-3">Lập trình Viên Pro</h1><p class="lead mb-4 text-white-50" style="max-width: 500px;">Khóa học Fullstack từ Zero đến Hero.</p><button class="btn btn-light rounded-pill px-4 py-2 fw-bold text-primary shadow-sm hover-scale">Xem ngay</button></div>
+                </div>
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" class="d-block w-100" style="height: 400px; object-fit: cover;">
+                    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(34, 197, 94, 0.85) 100%);"></div>
+                    <div class="carousel-caption h-100 d-flex flex-column justify-content-center align-items-start text-start p-5 top-0"><span class="badge bg-white text-success mb-3 px-3 py-2 rounded-pill fw-bold">Dự án thực tế</span><h1 class="display-5 fw-bold mb-3">Thực Chiến ASP.NET</h1><p class="lead mb-4 text-white-50" style="max-width: 500px;">Xây dựng website bán hàng hoàn chỉnh.</p><button class="btn btn-light rounded-pill px-4 py-2 fw-bold text-success shadow-sm hover-scale">Học thử</button></div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-3">
+            <div><h2 class="fw-bold text-dark m-0">Khóa học nổi bật</h2><p class="text-secondary m-0">Top khóa học bán chạy tuần qua</p></div>
+            <div class="d-flex gap-2">
+                <div class="dropdown">
+                    <button class="btn btn-white border rounded-pill px-3 fw-bold dropdown-toggle small h-100 shadow-sm" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-arrow-down-short-wide me-2 text-secondary"></i>Sắp xếp</button>
+                    <ul class="dropdown-menu border-0 shadow-sm rounded-3 right-0">
+                        <li><a class="dropdown-item" asp-action="Index" asp-route-sortOrder="" asp-route-searchString="@ViewData["CurrentFilter"]" asp-route-priceFilter="@ViewData["PriceFilter"]">Mới nhất</a></li>
+                        <li><a class="dropdown-item" asp-action="Index" asp-route-sortOrder="Price_Asc" asp-route-searchString="@ViewData["CurrentFilter"]" asp-route-priceFilter="@ViewData["PriceFilter"]">Giá thấp đến cao</a></li>
+                        <li><a class="dropdown-item" asp-action="Index" asp-route-sortOrder="Price_Desc" asp-route-searchString="@ViewData["CurrentFilter"]" asp-route-priceFilter="@ViewData["PriceFilter"]">Giá cao đến thấp</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5" id="danhSachKhoaHoc">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-6 col-lg-4 d-flex align-items-stretch">
+                        <div class="card w-100 border-0 shadow-sm rounded-4 overflow-hidden hover-card transition-all">
+                            <div class="position-relative w-100" style="padding-top: 56.25%;">
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="d-block">
+                                    <img src="@(string.IsNullOrEmpty(item.HinhAnh) ? "https://via.placeholder.com/400x225?text=No+Image" : (item.HinhAnh.StartsWith("http") ? item.HinhAnh : "/images/khoahoc/" + item.HinhAnh))" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" alt="@item.TenKhoaHoc" onerror="this.src='https://via.placeholder.com/400x225?text=Error'">
+                                </a>
+                                <div class="position-absolute top-0 end-0 m-2 z-1"><span class="badge bg-white text-dark shadow-sm rounded-pill fw-bold small"><i class="fa-solid fa-star text-warning me-1"></i>4.9</span></div>
+                            </div>
+                            <div class="card-body d-flex flex-column p-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2"><span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 py-1" style="font-size: 0.7rem;">Lập trình</span><small class="text-muted"><i class="fa-regular fa-clock me-1"></i>30h</small></div>
+                                <h6 class="card-title fw-bold text-dark mb-2 text-truncate-2" style="min-height: 40px;" title="@item.TenKhoaHoc"><a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-dark stretched-link">@item.TenKhoaHoc</a></h6>
+                                <div class="d-flex align-items-center mb-3"><div class="d-flex align-items-center"><img src="https://ui-avatars.com/api/?name=Admin&background=random&size=24" class="rounded-circle me-2" width="24" height="24"><small class="text-secondary fw-medium" style="font-size: 0.8rem;">EduLearn Team</small></div></div>
+                                <div class="d-flex align-items-center justify-content-between mt-auto pt-3 border-top border-light border-opacity-50">
+                                    <div>
+                                        @if (item.GiaTien > 0)
+                                        {
+                                            <div class="text-primary fw-bold fs-6">@item.GiaTien.ToString("N0") đ</div>
+                                            <small class="text-decoration-line-through text-muted" style="font-size: 0.75rem">@( (item.GiaTien * 1.3m).ToString("N0") ) đ</small>
+         }
+                                        else
+                                        {
+                                            <div class="text-success fw-bold fs-6">Miễn phí</div>
+                                        }
+                                    </div>
+                                    <a asp-controller="Checkout" asp-action="Confirm" asp-route-id="@item.Id" class="btn btn-light text-primary rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center hover-btn-primary" style="width: 40px; height: 40px; z-index: 2; position: relative;">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5"><div class="mb-3 text-secondary opacity-50" style="font-size: 4rem;"><i class="fa-solid fa-box-open"></i></div><h5 class="fw-bold text-secondary">Không tìm thấy khóa học nào</h5><p class="text-muted">Hãy thử tìm từ khóa khác xem sao!</p><a asp-action="Index" class="btn btn-outline-primary rounded-pill btn-sm mt-2">Xóa bộ lọc</a></div>
+            }
+        </div>
+
+        <div class="mb-5 text-center"><p class="text-secondary small fw-bold text-uppercase ls-1 mb-4">Học viên của chúng tôi đang làm việc tại</p><div class="d-flex flex-wrap justify-content-center align-items-center gap-5 opacity-50"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" height="30" alt="Google" style="filter: grayscale(100%);"><img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" height="30" alt="Microsoft" style="filter: grayscale(100%);"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" height="30" alt="Amazon" style="filter: grayscale(100%);"><img src="https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg" height="35" alt="FPT" style="filter: grayscale(100%);"></div></div>
+        <div class="bg-primary bg-opacity-10 rounded-extra p-5 mb-5"><div class="text-center mb-5"><h2 class="fw-bold">Lộ trình trở thành lập trình viên</h2><p class="text-secondary">4 bước đơn giản để chinh phục mục tiêu nghề nghiệp của bạn</p></div><div class="row g-4 justify-content-center"><div class="col-md-3 text-center position-relative"><div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3 position-relative z-1" style="width: 70px; height: 70px; font-size: 24px;"><i class="fa-solid fa-lightbulb"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary border border-white small">1</span></div><h5 class="fw-bold">Định hướng & Chọn</h5><p class="text-secondary small">Khám phá các chủ đề và chọn lộ trình phù hợp.</p><div class="d-none d-md-block position-absolute top-50 start-50 w-100 border-top border-primary border-2 opacity-25 z-0" style="transform: translateY(-35px);"></div></div><div class="col-md-3 text-center position-relative"><div class="bg-white text-success rounded-circle d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3 position-relative z-1" style="width: 70px; height: 70px; font-size: 24px;"><i class="fa-solid fa-laptop-code"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success border border-white small">2</span></div><h5 class="fw-bold">Học tập & Thực hành</h5><p class="text-secondary small">Xem video bài giảng và làm bài tập code trực tiếp.</p><div class="d-none d-md-block position-absolute top-50 start-50 w-100 border-top border-success border-2 opacity-25 z-0" style="transform: translateY(-35px);"></div></div><div class="col-md-3 text-center position-relative"><div class="bg-white text-warning rounded-circle d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3 position-relative z-1" style="width: 70px; height: 70px; font-size: 24px;"><i class="fa-solid fa-diagram-project"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning border border-white small">3</span></div><h5 class="fw-bold">Làm dự án thực tế</h5><p class="text-secondary small">Xây dựng sản phẩm hoàn chỉnh bổ sung Portfolio.</p><div class="d-none d-md-block position-absolute top-50 start-50 w-100 border-top border-warning border-2 opacity-25 z-0" style="transform: translateY(-35px);"></div></div><div class="col-md-3 text-center position-relative"><div class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center shadow-sm mx-auto mb-3 position-relative z-1" style="width: 70px; height: 70px; font-size: 24px;"><i class="fa-solid fa-briefcase"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white small">4</span></div><h5 class="fw-bold">Nhận chứng chỉ & Đi làm</h5><p class="text-secondary small">Hoàn thành khóa học, nhận chứng chỉ và ứng tuyển.</p></div></div></div>
+        <div class="mb-5"><h3 class="fw-bold text-dark text-center mb-4">Câu hỏi thường gặp</h3><div class="accordion accordion-flush shadow-sm rounded-4 overflow-hidden border" id="faqAccordion"><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button fw-bold collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq1"><i class="fa-regular fa-circle-question me-2 text-primary"></i> Tôi là người mới bắt đầu, có học được không?</button></h2><div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Chắc chắn rồi! Các khóa học tại EduLearn được thiết kế từ cơ bản đến nâng cao.</div></div></div><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button fw-bold collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq2"><i class="fa-regular fa-clock me-2 text-primary"></i> Thời gian học là bao lâu?</button></h2><div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Bạn có thể học linh hoạt mọi lúc mọi nơi. Khóa học có giá trị trọn đời.</div></div></div><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button fw-bold collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq3"><i class="fa-solid fa-certificate me-2 text-primary"></i> Có cấp chứng chỉ không?</button></h2><div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body text-secondary">Có. Sau khi hoàn thành 100% bài học, bạn sẽ nhận được chứng chỉ hoàn thành điện tử.</div></div></div></div></div>
+        <div class="rounded-4 p-5 text-white position-relative overflow-hidden shadow-sm mb-4" style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%);"><div class="position-relative z-1 text-center"><h3 class="fw-bold mb-3 display-6">Sẵn sàng thay đổi tương lai?</h3><p class="mb-4 opacity-75 lead">Tham gia cùng hơn 50,000 học viên khác ngay hôm nay.</p><button class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow-sm hover-scale">Bắt đầu học miễn phí</button></div><i class="fa-solid fa-code position-absolute opacity-05" style="font-size: 15rem; left: -50px; bottom: -50px; color: white;"></i><i class="fa-solid fa-layer-group position-absolute opacity-05" style="font-size: 12rem; right: -30px; top: -30px; color: white;"></i></div>
+    </div>
+</div>
+
+<style>
+    .rounded-extra {
+        border-radius: 20px !important;
+    }
+
+    .hover-scale {
+        transition: transform 0.2s;
+    }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+
+    .hover-btn-primary:hover {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+
+    .text-truncate-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+
+    .form-check-input:checked {
+        background-color: #4f46e5;
+        border-color: #4f46e5;
+    }
+
+    .ls-1 {
+        letter-spacing: 1px;
+    }
+
+    .accordion-button:not(.collapsed) {
+        color: #4f46e5;
+        background-color: #f8fafc;
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(0,0,0,.125);
+    }
+
+    .opacity-25 {
+        opacity: 0.25;
+    }
+
+    .opacity-05 {
+        opacity: 0.05;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let timeout = null;
+            $('input[name="searchString"]').on('input', function () {
+                var keyword = $(this).val();
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    $("#danhSachKhoaHoc").css("opacity", "0.5");
+                    var url = '@Url.Action("Index", "Home")?searchString=' + keyword + ' #danhSachKhoaHoc';
+                    $("#danhSachKhoaHoc").load(url, function () {
+                        $("#danhSachKhoaHoc").css("opacity", "1");
+                    });
+                }, 500);
+            });
+        });
+    </script>
+}
