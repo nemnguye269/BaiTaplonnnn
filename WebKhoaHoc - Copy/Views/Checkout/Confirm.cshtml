@@ -1,0 +1,73 @@
+﻿@model WebKhoaHoc.Models.KhoaHoc
+
+@{
+    ViewData["Title"] = "Xác nhận thanh toán";
+}
+
+<div class="container py-5 d-flex justify-content-center">
+
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 600px; width: 100%;">
+
+        <div class="card-header bg-primary text-white text-center py-4">
+            <h4 class="mb-0 fw-bold"><i class="fa-solid fa-receipt me-2"></i>Xác nhận đơn hàng</h4>
+            <p class="mb-0 opacity-75 small">Vui lòng kiểm tra thông tin trước khi thanh toán</p>
+        </div>
+
+        <div class="card-body p-5">
+
+            <div class="d-flex gap-3 mb-4 align-items-center">
+                <div class="rounded-3 overflow-hidden shadow-sm border" style="width: 100px; height: 70px;">
+                    <img src="@(string.IsNullOrEmpty(Model.HinhAnh) ? "https://via.placeholder.com/150" : (Model.HinhAnh.StartsWith("http") ? Model.HinhAnh : "/images/khoahoc/" + Model.HinhAnh))"
+                         class="w-100 h-100 object-fit-cover"
+                         alt="@Model.TenKhoaHoc"
+                         onerror="this.src='https://via.placeholder.com/150'">
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1 text-dark">@Model.TenKhoaHoc</h5>
+                    <small class="text-muted"><i class="fa-solid fa-chalkboard-user me-1"></i>Giảng viên: EduLearn Team</small>
+                </div>
+            </div>
+
+            <ul class="list-group list-group-flush mb-4 rounded-3 border">
+                <li class="list-group-item d-flex justify-content-between py-3">
+                    <span class="text-secondary">Giá gốc:</span>
+                    <span class="text-muted text-decoration-line-through">@((Model.GiaTien * 1.3m).ToString("N0")) đ</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between py-3">
+                    <span class="text-secondary">Giảm giá (Ưu đãi):</span>
+                    <span class="text-success fw-bold">-30%</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between py-3 bg-light">
+                    <span class="fw-bold text-dark">Tổng thanh toán:</span>
+                    <span class="text-primary fs-4 fw-bold">@Model.GiaTien.ToString("N0") đ</span>
+                </li>
+            </ul>
+
+            <form asp-controller="Checkout" asp-action="Payment" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm hover-scale mb-3">
+                    <i class="fa-regular fa-credit-card me-2"></i>Thanh toán ngay
+                </button>
+            </form>
+
+            <div class="text-center">
+                <a asp-controller="Home" asp-action="Index" class="text-decoration-none small text-secondary fw-bold">
+                    <i class="fa-solid fa-arrow-left me-1"></i>Hủy bỏ và quay lại
+                </a>
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-light text-center py-3">
+            <small class="text-muted"><i class="fa-solid fa-shield-halved me-1 text-success"></i>Thông tin của bạn được bảo mật tuyệt đối.</small>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-scale:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2) !important;
+    }
+</style>

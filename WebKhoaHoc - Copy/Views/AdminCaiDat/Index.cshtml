@@ -1,0 +1,101 @@
+﻿@model WebKhoaHoc.Models.CauHinh
+@{
+    ViewData["Title"] = "Cài đặt hệ thống";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid py-2">
+    <div class="mb-4">
+        <h2 class="fw-bold text-dark mb-1">Cài đặt chung</h2>
+        <p class="text-muted small">Cấu hình thông tin thương hiệu và liên hệ của website</p>
+    </div>
+
+    <form asp-action="Save" method="post">
+        <input type="hidden" asp-for="Id" />
+        
+        <div class="row g-4">
+            @* Cột trái: Thông tin chính *@
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white py-3 border-bottom-0">
+                        <h6 class="fw-bold mb-0 text-primary">Thông tin Website</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-muted text-uppercase">Tên Website</label>
+                            <input asp-for="TenWebsite" class="form-control form-control-lg border-light-subtle rounded-3 shadow-none bg-light" 
+                                   placeholder="Ví dụ: WebKhoaHoc - Học trực tuyến" style="font-size: 0.95rem;" />
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted text-uppercase">Số điện thoại (Hotline)</label>
+                                <input asp-for="Hotline" class="form-control border-light-subtle rounded-3 shadow-none bg-light" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted text-uppercase">Email liên hệ</label>
+                                <input asp-for="EmailLienHe" class="form-control border-light-subtle rounded-3 shadow-none bg-light" />
+                            </div>
+                        </div>
+
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold small text-muted text-uppercase">Địa chỉ trụ sở</label>
+                            <textarea asp-for="DiaChi" class="form-control border-light-subtle rounded-3 shadow-none bg-light" 
+                                      rows="3" placeholder="Nhập địa chỉ công ty..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Cột phải: Logo & Lưu *@
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-header bg-white py-3 border-bottom-0">
+                        <h6 class="fw-bold mb-0 text-primary">Logo hệ thống</h6>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <div class="p-3 bg-light rounded-4 mb-3 d-inline-block shadow-sm">
+                                <img id="logoPreview" src="@(Model.LogoUrl ?? "https://ui-avatars.com/api/?name=W&background=4361ee&color=fff")" 
+                                     class="img-fluid" style="max-height: 80px;" alt="Logo Preview">
+                            </div>
+                            <input asp-for="LogoUrl" class="form-control form-control-sm border-light-subtle rounded-3" 
+                                   placeholder="Dán link logo vào đây" onchange="previewImage(this)" />
+                        </div>
+                        <p class="text-muted small px-3">Sử dụng URL ảnh trực tuyến hoặc đường dẫn từ thư mục <code>wwwroot</code></p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm mb-3">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> Lưu cài đặt
+                        </button>
+                        <p class="text-center text-muted mb-0" style="font-size: 0.75rem;">
+                            <i class="fa-solid fa-circle-info me-1"></i> Thay đổi sẽ áp dụng ngay lập tức trên toàn hệ thống.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(input) {
+            if (input.value) {
+                document.getElementById('logoPreview').src = input.value;
+            }
+        }
+    </script>
+}
+
+<style>
+    .form-control:focus {
+        background-color: #fff !important;
+        border-color: var(--primary-color) !important;
+    }
+    .card { transition: transform 0.2s ease; }
+    .card:hover { transform: translateY(-2px); }
+</style>

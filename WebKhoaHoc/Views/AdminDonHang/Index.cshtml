@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebKhoaHoc.Models.DonHang>
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">Quản lý đơn hàng</h2>
+    <div class="badge bg-primary px-3 py-2">Tổng: @Model.Count() đơn hàng</div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="ps-4">Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Khóa học</th>
+                        <th>Giá</th>
+                        <th>Ngày đặt</th>
+                        <th class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 fw-bold">#@item.Id</td>
+                            <td>@item.User?.HoTen</td>
+                            <td>@item.KhoaHoc?.TenKhoaHoc</td>
+                            <td class="text-success fw-bold">@item.SoTien.ToString("N0")đ</td>
+                            <td class="text-muted">@item.NgayMua.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary rounded-circle"><i class="fa-solid fa-eye"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

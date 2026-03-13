@@ -1,0 +1,27 @@
+﻿@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thành công - EduLearn</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body { background: #f8fafc; font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .card-success { background: white; padding: 3rem; border-radius: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); text-align: center; max-width: 450px; width: 90%; }
+        .icon-box { width: 80px; height: 80px; background: #dcfce7; color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2.5rem; }
+        .btn-gradient { background: linear-gradient(to right, #ec4899, #ef4444); border: none; color: white; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 600; text-decoration: none; display: block; transition: 0.3s; }
+        .btn-gradient:hover { opacity: 0.9; color: white; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="card-success">
+        <div class="icon-box"><i class="fa-solid fa-check"></i></div>
+        <h2 class="fw-bold mb-3">Đăng ký thành công!</h2>
+        <p class="text-secondary mb-4">Chào mừng <strong>@ViewBag.UserName</strong>. Tài khoản của bạn đã sẵn sàng. Hãy đăng nhập để khám phá các khóa học ngay.</p>
+        <a href="@Url.Action("Login", "Account")" class="btn btn-gradient mb-3">ĐĂNG NHẬP NGAY</a>
+        <a href="@Url.Action("Index", "Home")" class="text-muted small text-decoration-none">Quay về trang chủ</a>
+    </div>
+</body>
+</html>

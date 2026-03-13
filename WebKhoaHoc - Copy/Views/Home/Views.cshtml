@@ -1,0 +1,21 @@
+﻿@model WebKhoaHoc.Models.KhoaHoc
+@{
+    ViewData["Title"] = "Khóa học " + Model.TenKhoaHoc;
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout người dùng
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="~/images/courses/@Model.HinhAnh" class="img-fluid rounded shadow-sm" onerror="this.src='https://placehold.co/600x400'">
+            </div>
+            <div class="col-md-6">
+                <span class="badge bg-info mb-2">@Model.DanhMuc?.TenDanhMuc</span>
+                <h1 class="display-5 fw-bold">@Model.TenKhoaHoc</h1>
+                <h3 class="text-danger my-4">@Model.GiaTien.ToString("N0") VNĐ</h3>
+                <p class="lead text-muted">@Model.MoTa</p>
+                <hr>
+                <button class="btn btn-primary btn-lg px-5 rounded-pill shadow">Đăng Ký Ngay</button>
+            </div>
+        </div>
+    </div>

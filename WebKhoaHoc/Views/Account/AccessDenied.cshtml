@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Không có quyền";
+}
+<div class="container text-center" style="padding: 100px;">
+    <h1 class="display-4 text-danger">Dừng lại!</h1>
+    <p class="lead">Bạn không có quyền truy cập vào chức năng này.</p>
+    <hr />
+    <p>Vui lòng đăng nhập bằng tài khoản có quyền <b>Admin</b>.</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Về trang chủ</a>
+    <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Đăng nhập tài khoản khác</a>
+</div>

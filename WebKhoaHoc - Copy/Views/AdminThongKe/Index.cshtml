@@ -1,0 +1,148 @@
+﻿@using WebKhoaHoc.Models
+@model List<InstructorReportViewModel>
+
+@{
+    ViewData["Title"] = "Báo cáo thống kê";
+    // Đảm bảo tên Layout đúng với file trong Shared của bạn
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
+
+    // Ép kiểu an toàn để tránh lỗi CS0246
+    var userStats = ViewBag.UserStats as Dictionary<string, int> ?? new Dictionary<string, int>();
+    var topCourses = ViewBag.TopCourses as List<TopCourseViewModel> ?? new List<TopCourseViewModel>();
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary"><i class="fa-solid fa-chart-line me-2"></i>Hệ thống báo cáo</h2>
+        <div class="text-muted">Ngày cập nhật: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")</div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-xl-4 col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4 text-dark">Cơ cấu người dùng</h5>
+                    <div style="position: relative; height:250px;">
+                        <canvas id="userChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8 col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-4 text-dark">Top 5 khóa học nhiều học viên nhất</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="bg-light">
+                                <tr class="small text-uppercase">
+                                    <th class="border-0">Tên khóa học</th>
+                                    <th class="border-0 text-center">Học viên</th>
+                                    <th class="border-0" style="width: 35%;">Phân bổ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in topCourses)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-secondary">@item.TenKhoaHoc</td>
+                                        <td class="text-center">
+                                            <span class="badge bg-soft-primary text-primary rounded-pill px-3">@item.SoHocVien</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px; background-color: #eef2ff;">
+                                                <div class="progress-bar rounded-pill" style="width: @(item.SoHocVien > 100 ? 100 : item.SoHocVien * 5)%;"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-4 text-dark">Hiệu suất đào tạo của Giảng viên</h5>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                @foreach (var gv in Model)
+                {
+                    <div class="col">
+                        <div class="p-3 border rounded-4 bg-white shadow-sm h-100">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px;">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">@gv.TenGiangVien</h6>
+                                    <small class="text-muted">Giảng viên hệ thống</small>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-sm table-borderless mb-0">
+                                <thead class="small text-muted border-bottom">
+                                    <tr>
+                                        <th>Khóa học</th>
+                                        <th class="text-center">Bài giảng</th>
+                                        <th class="text-end">Học viên</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="small">
+                                    @foreach (var kh in gv.DanhSachKhoaHoc)
+                                    {
+                                        <tr>
+                                            <td class="py-2">@kh.TenKhoaHoc</td>
+                                            <td class="py-2 text-center text-muted">@kh.SoBaiGiang</td>
+                                            <td class="py-2 text-end fw-bold text-primary">@kh.SoHocVien</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('userChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(Json.Serialize(userStats.Keys)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(userStats.Values)),
+                    backgroundColor: ['#4f46e5', '#10b981', '#f59e0b', '#ef4444', '#3b82f6'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { usePointStyle: true, padding: 20, font: { size: 12 } }
+                    }
+                },
+                cutout: '75%'
+            }
+        });
+    </script>
+}
+
+<style>
+    .bg-soft-primary { background-color: #eef2ff; }
+    .progress-bar { background-color: #4f46e5; }
+    .card { transition: transform 0.2s; }
+    .rounded-4 { border-radius: 1rem !important; }
+</style>

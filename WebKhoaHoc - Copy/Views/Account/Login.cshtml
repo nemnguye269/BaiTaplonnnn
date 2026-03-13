@@ -1,0 +1,306 @@
+﻿@model WebKhoaHoc.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng Nhập";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Nhập - EduLearn</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+        }
+
+        /* BỐ CỤC CHIA ĐÔI */
+        .split-screen {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* CỘT TRÁI: ẢNH NGHỆ THUẬT */
+        .left-side {
+            flex: 1;
+            background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: none;
+        }
+            /* Lớp phủ gradient lên ảnh */
+            .left-side::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to bottom, rgba(79, 70, 229, 0.4), rgba(0, 0, 0, 0.8));
+                backdrop-filter: blur(2px);
+            }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 80px;
+            color: white;
+        }
+
+        /* CỘT PHẢI: FORM */
+        .right-side {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: white;
+        }
+
+        /* ANIMATION: Form trượt lên */
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        /* INPUT CUSTOM */
+        .form-control-custom {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 14px 14px 14px 45px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+            .form-control-custom:focus {
+                background: white;
+                border-color: #4f46e5;
+                box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+                outline: none;
+            }
+
+        .input-icon-box {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+
+        /* SOCIAL BUTTONS */
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: #1e293b;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+            .btn-social:hover {
+                background: #f8fafc;
+                transform: translateY(-2px);
+            }
+
+        /* DIVIDER */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+            .divider::before, .divider::after {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .divider:not(:empty)::before {
+                margin-right: .5em;
+            }
+
+            .divider:not(:empty)::after {
+                margin-left: .5em;
+            }
+
+        @@media (min-width: 992px) {
+            .left-side {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-screen">
+
+        <div class="left-side">
+            <div class="left-content">
+                <div class="mb-4">
+                    <i class="fa-solid fa-quote-left display-4 text-warning opacity-75"></i>
+                </div>
+                <h2 class="fw-bold mb-3">"Giáo dục là vũ khí mạnh nhất mà bạn có thể dùng để thay đổi thế giới."</h2>
+                <p class="fs-5 opacity-75">— Nelson Mandela</p>
+                <div class="d-flex gap-2 mt-4">
+                    <div class="bg-white rounded-pill" style="width: 40px; height: 4px;"></div>
+                    <div class="bg-white opacity-50 rounded-pill" style="width: 10px; height: 4px;"></div>
+                    <div class="bg-white opacity-50 rounded-pill" style="width: 10px; height: 4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="login-wrapper">
+
+                <div class="text-center mb-5">
+                    <a asp-controller="Home" asp-action="Index" class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-3 p-3 mb-3">
+                        <i class="fa-solid fa-book-open fs-3"></i>
+                    </a>
+                    <h3 class="fw-bold text-dark">Chào mừng trở lại! 👋</h3>
+                    <p class="text-secondary">Vui lòng nhập thông tin để đăng nhập.</p>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <a href="#" class="btn btn-social text-decoration-none">
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" alt="Google">
+                            Google
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-social text-decoration-none">
+                            <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" width="20" alt="Facebook">
+                            Facebook
+                        </a>
+                    </div>
+                </div>
+
+                <div class="divider">HOẶC TIẾP TỤC VỚI EMAIL</div>
+
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small bg-danger bg-opacity-10 p-2 rounded"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-secondary small">Email</label>
+                        <div class="input-icon-box">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input asp-for="UserName" class="form-control form-control-custom" placeholder="name@example.com" />
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label fw-bold text-secondary small">Mật khẩu</label>
+                            <a href="#" class="text-primary fw-bold small text-decoration-none">Quên mật khẩu?</a>
+                        </div>
+                        <div class="input-icon-box">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input asp-for="Password" type="password" class="form-control form-control-custom" placeholder="••••••••" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe" style="cursor: pointer;">
+                        <label class="form-check-label text-secondary small cursor-pointer" for="rememberMe">
+                            Ghi nhớ phiên đăng nhập
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-lg mb-4"
+                            style="background: linear-gradient(to right, #4f46e5, #7c3aed); border: none;">
+                        ĐĂNG NHẬP NGAY
+                    </button>
+
+                    <p class="text-center text-secondary small">
+                        Bạn chưa có tài khoản?
+                        <a asp-action="Register" class="text-primary fw-bold text-decoration-none ms-1">Đăng ký miễn phí</a>
+                    </p>
+                </form>
+
+                <div class="text-center mt-4">
+                    <a asp-controller="Home" asp-action="Index" class="text-secondary small text-decoration-none hover-primary">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Quay về trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        // Lấy giá trị từ TempData (C#) gán vào biến JavaScript
+        var message = '@TempData["SuccessMessage"]';
+            
+        if (message && message.length > 0) {
+        Swal.fire({
+        icon: 'success',
+        title: 'Thành công!',
+        text: message,
+        timer: 3000, // Tự đóng sau 3 giây
+        showConfirmButton: false,
+        position: 'top-end', // Hiện ở góc màn hình cho tinh tế
+        toast: true // Kiểu thông báo nhỏ (Toast)
+        });
+        }
+        });
+       @if (TempData["Success"] != null)
+        {
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: '@TempData["Success"]',
+                confirmButtonColor: '#ec4899',
+                timer: 3000 // Tự đóng sau 3 giây
+                });
+            </script>
+        }
+    </script>
+}

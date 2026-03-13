@@ -1,0 +1,130 @@
+﻿@model WebKhoaHoc.Models.KhoaHoc
+@{
+    ViewData["Title"] = Model.TenKhoaHoc;
+}
+
+<div class="container my-5">
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <div class="position-relative rounded-4 overflow-hidden shadow-lg border">
+                <img src="~/images/courses/@Model.HinhAnh" 
+                     class="w-100 object-fit-cover" 
+                     style="min-height: 400px; max-height: 500px;" 
+                     onerror="this.src='https://placehold.co/800x450?text=EduLearn+Course'">
+                <div class="position-absolute top-0 start-0 m-3">
+                    <span class="badge bg-primary px-3 py-2 rounded-pill shadow">
+                        <i class="fa-solid fa-tag me-1"></i> @(Model.DanhMuc?.TenDanhMuc ?? "Khóa học")
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <h1 class="fw-bold display-6 mb-3">@Model.TenKhoaHoc</h1>
+            
+            <div class="d-flex align-items-center mb-4">
+                <img src="https://ui-avatars.com/api/?name=Edu&background=4f46e5&color=fff" class="rounded-circle me-2" width="45">
+                <div>
+                    <p class="mb-0 fw-bold">EduLearn Team</p>
+                    <small class="text-muted">Giảng viên chuyên nghiệp</small>
+                </div>
+            </div>
+
+            <div class="bg-light p-4 rounded-4 mb-4 border">
+                <div class="d-flex align-items-end gap-2 mb-3">
+                    <h2 class="text-primary fw-bold mb-0">
+                        @(Model.GiaTien > 0 ? Model.GiaTien.ToString("N0") + " đ" : "Miễn phí")
+                    </h2>
+                </div>
+                
+                <div class="small mb-4 text-secondary">
+                    <div class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>Truy cập trọn đời</div>
+                    <div class="mb-2"><i class="fa-solid fa-video text-primary me-2"></i>Học qua Video bài giảng</div>
+                </div>
+                
+                @* SỬA NÚT BẤM ĐỂ GỌI HÀM AJAX *@
+                <button type="button" id="btnRegister" onclick="handleAddToCart(@Model.Id)"
+                        class="btn btn-primary btn-lg w-100 rounded-pill fw-bold py-3 shadow-sm hover-scale">
+                    ĐĂNG KÝ HỌC NGAY
+                </button>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+                <h6 class="fw-bold mb-2 border-bottom pb-2">Mô tả khóa học</h6>
+                <p class="text-muted small mb-0">@Model.MoTa</p>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.BaiHocs != null && Model.BaiHocs.Any())
+    {
+        <div class="mt-5 pt-4">
+            <h4 class="fw-bold mb-4">Nội dung khóa học</h4>
+            <div class="list-group rounded-4 shadow-sm border overflow-hidden">
+                @foreach (var bai in Model.BaiHocs)
+                {
+                    <div class="list-group-item list-group-item-action border-0 border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-circle-play text-primary me-3"></i>@bai.TieuDe</span>
+                        <span class="badge bg-light text-secondary rounded-pill fw-normal px-3 py-2">Video</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        function handleAddToCart(courseId) {
+            $.ajax({
+                url: '/GioHang/AddToCart', // Đường dẫn tới Controller xử lý
+                type: 'POST',
+                data: { id: courseId },
+                success: function (response) {
+                    if (response.success) {
+                        // 1. Cập nhật con số trên Header ngay lập tức
+                        if (typeof updateCart === "function") {
+                            updateCart();
+                        }
+
+                        // 2. Hiện thông báo đẹp mắt
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Khóa học đã được thêm vào giỏ hàng.',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            toast: true,
+                            position: 'top-end'
+                        });
+                    } else {
+                        // Nếu chưa đăng nhập, Server trả về success: false
+                        Swal.fire({
+                            title: 'Yêu cầu đăng nhập',
+                            text: 'Bạn cần đăng nhập để đăng ký khóa học này.',
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonText: 'Đăng nhập ngay',
+                            cancelButtonText: 'Để sau'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/Account/Login';
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire('Lỗi', 'Không thể thêm khóa học vào giỏ hàng', 'error');
+                }
+            });
+        }
+    </script>
+}
+
+<style>
+    .hover-scale:hover { transform: scale(1.02); transition: 0.3s ease; cursor: pointer; }
+    .object-fit-cover { object-fit: cover; }
+    .rounded-4 { border-radius: 1rem !important; }
+</style>
